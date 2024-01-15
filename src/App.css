@@ -4,11 +4,12 @@
   box-sizing: border-box;
 }
 
+html {
+  background-image: url("/public/background.jpg");
+}
+
 .container {
-  width: 100%;
-  height: 100%;
-  padding-top: 50px;
-  background-color: rgb(137, 170, 237);
+  margin-top: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,11 +18,9 @@
 
 .small-container {
   padding: 15px;
-  width: 100%;
   border-radius: 10px;
-  margin: 60px auto;
-  background-color: rgb(66,195,195);
-  max-width: 700px;
+  background-color: rgb(66, 195, 195, 0.4);
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -29,7 +28,8 @@
 }
 
 .search {
-  margin-top: 15px;
+  text-align: center;
+  margin-top: 10px;
 }
 
 .search button {
@@ -58,22 +58,20 @@
 .searchbox button {
   border: none;
   outline: 0;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  position: absolute;
-  margin-top: -2.5px;
-  background-color: white;
 }
 
 .searchbox button img {
-  width: 30px;
+  width: 15px;
+  text-align: center;
 }
 
 .weather-header {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 .winfo {
@@ -85,7 +83,7 @@
   margin-top: 20px;
   width: 170px;
 }
- 
+
 .winfo h1 {
   font-size: 70px;
   font-weight: 500;
@@ -107,7 +105,7 @@
 }
 
 .details .col {
-  display:flex;
+  display: flex;
   align-items: center;
   text-align: left;
 }
@@ -117,11 +115,13 @@
   margin-right: 10px;
 }
 
-.humidity, .wind {
+.humidity,
+.wind {
   font-size: 27px;
 }
 
-.humidity p, .wind p {
+.humidity p,
+.wind p {
   margin: 0px;
 }
 
@@ -131,13 +131,16 @@
   margin-left: 10px;
 }
 
-.weather-footer__wind img {
-  width: 40%;
+.weather-footer-container {
+  background-color: rgba(255, 255, 255, 0.575);
+  display: flex;
+  align-items: center;
+  border-radius: 40px;
+  margin-left: 40px;
 }
 
-.weather-footer__wind  {
-  margin-top: 45px;
-  padding-left: 70px;
+.weather-footer__wind img {
+  width: 40%;
 }
 
 .weather-footer__wind h3 {
@@ -145,12 +148,13 @@
   text-align: center;
 }
 
-.weather-footer__humidity {
-  margin-top: 45px;
-}
-
 .weather-footer__humidity img {
   width: 40%;
+}
+
+.weather-footer__main {
+  background-color: rgba(255, 255, 255, 0.575);
+  border-radius: 40px;
 }
 
 .weather-footer__main h1 {
@@ -168,7 +172,13 @@
 
 .weather-footer {
   display: flex;
-  padding-top: 50px;
+  margin-top: 50px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 40px;
+}
+
+.weather-header__current_weather {
+  margin-left: 20px;
 }
 
 .weather-header-current-date {

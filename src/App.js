@@ -7,7 +7,7 @@ import './App.css';
 function App() {
   const [data, setData] = useState({
     celcius: 0,
-    name: 'Город не выбран',
+    name: 'Город',
     humidity: 0,
     speed: 0,
     image: 'weather.png',
@@ -55,7 +55,7 @@ function App() {
 
   const handleClick = () => {
     if (name !== '') {
-      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=af514b278442b8766fbfdcd2ab613d39&units=metric&lang=ru`
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=ec4cb39379bee03d7c959854916c4844&units=metric&lang=ru`
       axios.get(apiUrl)
         .then(res => {
           let currentWeather = '';
@@ -96,7 +96,7 @@ function App() {
             <h3>{data.current}</h3>
           </div>
           <div className='namesearch'>
-            <h2>Введите ваш город</h2>
+            <h2>Введите город</h2>
             <div className='search'>
               <input
                 type='text'
@@ -119,8 +119,8 @@ function App() {
             <h2>{data.name}</h2>
             <img src='weather.png' alt='weather'></img>
             <h1>{Math.round(data.celcius)}℃</h1>
-
           </div>
+          <div className='weather-footer-container'>
           <div className='weather-footer__wind'>
             <img src='wind.png' alt='wind'></img>
             <h2>{data.speed} м/с</h2>
@@ -128,6 +128,7 @@ function App() {
           <div className='weather-footer__humidity'>
             <img src='wet.png' alt='wet'></img>
             <h2>{data.humidity}%</h2>
+          </div>
           </div>
         </div>
       </div>
