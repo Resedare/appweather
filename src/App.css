@@ -38,6 +38,7 @@ html {
 
 .searchbox {
   display: flex;
+  justify-content: space-between
 }
 
 .namesearch {
@@ -155,6 +156,7 @@ html {
 .weather-footer__main {
   background-color: rgba(255, 255, 255, 0.575);
   border-radius: 40px;
+  max-height: 223px;
 }
 
 .weather-footer__main h1 {
@@ -167,7 +169,7 @@ html {
 
 .weather-footer__main img {
   text-align: center;
-  width: 90%;
+  max-width: 144px;
 }
 
 .weather-footer {

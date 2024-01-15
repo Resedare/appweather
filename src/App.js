@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  // Состояние для хранения погодных данных
   const [data, setData] = useState({
     celcius: 0,
     name: 'Город',
@@ -12,77 +12,127 @@ function App() {
     speed: 0,
     image: 'weather.png',
     current: ''
-  })
+  });
+
   const [name, setName] = useState('');
-
   const [time, setTime] = useState('');
-
   const [dayweekend, setDayweekend] = useState('');
 
+  // Функция для форматирования времени
   function formatTime(val) {
-    if (val < 10) {
-      return '0'
-    } else {
-      return '';
-    }
+    return val < 10 ? '0' + val : val;
   }
 
+  // Функция для обновления времени каждую секунду
   useEffect(() => {
-    const timerID = setInterval(
-      () => tick(), 1000)
+    const timerID = setInterval(() => tick(), 1000);
     return function cleanup() {
-      clearInterval(timerID)
-    }
-  })
+      clearInterval(timerID);
+    };
+  }, []);
 
+  // Функция для установки текущего времени и даты
   function tick() {
     const d = new Date();
-    const h = d.getHours();
-    const m = d.getMinutes();
-
-    
+    const h = formatTime(d.getHours());
+    const m = formatTime(d.getMinutes());
     const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
     const month = months[d.getMonth()];
-
     const daysOfWeek = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
     const dayOfWeek = daysOfWeek[d.getDay()];
-
     const dayOfMonth = d.getDate();
-
-    setTime(formatTime(h) + h + ':' + formatTime(m) + m);
+    setTime(`${h}:${m}`);
     setDayweekend(`${dayOfWeek}, ${dayOfMonth} ${month}`);
   }
 
+  // Функция для получения текущего местоположения пользователя
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(getWeatherForCurrentLocation, showError);
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  };
+
+  // Функция для получения данных о погоде для текущего местоположения
+  const getWeatherForCurrentLocation = (position) => {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=ec4cb39379bee03d7c959854916c4844&units=metric&lang=ru`;
+    axios.get(apiUrl)
+      .then(res => {
+        updateWeatherData(res);
+      })
+      .catch(err => console.log(err));
+  };
+
+  // Функция обновления погодных данных
+  const updateWeatherData = (res) => {
+    let currentWeather = '';
+    let imagePath = '';
+    switch (res.data.weather[0].main) {
+      case 'Clouds':
+        imagePath = 'weather.png';
+        currentWeather = 'Облачно';
+        break;
+      case 'Clear':
+        imagePath = '';
+        currentWeather = 'Солнечно';
+        break;
+      case 'Rain':
+      case 'Drizzle':
+        imagePath = '';
+        currentWeather = 'Дождливо';
+        break;
+      case 'Mist':
+        imagePath = '';
+        currentWeather = 'Туманно';
+        break;
+      default:
+        imagePath = '';
+        currentWeather = 'Ясно';
+    }
+    setData({
+      ...data, 
+      celcius: res.data.main.temp, 
+      name: res.data.name,
+      humidity: res.data.main.humidity, 
+      speed: res.data.wind.speed, 
+      image: imagePath, 
+      current: currentWeather
+    });
+  }
+
+  // Функция для обработки ошибок геолокации
+  const showError = (error) => {
+    switch(error.code) {
+      case error.PERMISSION_DENIED:
+        console.log("User denied the request for Geolocation.");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        console.log("Location information is unavailable.");
+        break;
+      case error.TIMEOUT:
+        console.log("The request to get user location timed out.");
+        break;
+      case error.UNKNOWN_ERROR:
+        console.log("An unknown error occurred.");
+        break;
+    }
+  }
+
+  // Выборка местоположения пользователя при монтировании компонента
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  // Функция для обработки поиска по городу
   const handleClick = () => {
     if (name !== '') {
-      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=ec4cb39379bee03d7c959854916c4844&units=metric&lang=ru`
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=ec4cb39379bee03d7c959854916c4844&units=metric&lang=ru`;
       axios.get(apiUrl)
         .then(res => {
-          let currentWeather = '';
-          let imagePath = '';
-          if (res.data.weather[0].main == 'Clouds') {
-            imagePath = 'weather.png'
-            currentWeather = 'Облачно'
-          } else if (res.data.weather[0].main == 'Clear') {
-            imagePath = ''
-            currentWeather = 'Солнечно'
-          } else if (res.data.weather[0].main == 'Rain') {
-            imagePath = ''
-            currentWeather = 'Дождливо'
-          } else if (res.data.weather[0].main == 'Drizzle') {
-            imagePath = ''
-            currentWeather = 'Дождливо'
-          } else if (res.data.weather[0].main == 'Mist') {
-            imagePath = ''
-            currentWeather = 'Туманно'
-          } else {
-            imagePath = ''
-            currentWeather = 'Ясно'
-          }
-          setData({
-            ...data, celcius: res.data.main.temp, name: res.data.name,
-            humidity: res.data.main.humidity, speed: res.data.wind.speed, image: imagePath, current: currentWeather
-          })
+          updateWeatherData(res);
         })
         .catch(err => console.log(err));
     }
@@ -104,7 +154,7 @@ function App() {
                 className='search_input'
                 onChange={e => setName(e.target.value)}
               />
-          <button><img src='location.png' alt='' onClick={handleClick}></img></button>
+          <button onClick={handleClick}><img src='location.png' alt=''></img></button>
             </div>
           </div>
           <div className='weather-header-current-date'>
@@ -118,7 +168,7 @@ function App() {
           <div className='weather-footer__main'>
             <h2>{data.name}</h2>
             <img src='weather.png' alt='weather'></img>
-            <h1>{Math.round(data.celcius)}℃</h1>
+            <h2>{Math.round(data.celcius)}℃</h2>
           </div>
           <div className='weather-footer-container'>
           <div className='weather-footer__wind'>
