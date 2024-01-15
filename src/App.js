@@ -153,6 +153,11 @@ function App() {
                 placeholder='Поиск города'
                 className='search_input'
                 onChange={e => setName(e.target.value)}
+                onKeyPress={e => {
+                  if (e.key === 'Enter') {
+                    handleClick();
+                  }
+                }}
               />
           <button onClick={handleClick}><img src='location.png' alt=''></img></button>
             </div>
