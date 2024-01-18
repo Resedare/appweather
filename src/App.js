@@ -10,7 +10,7 @@ function App() {
     name: 'Город',
     humidity: 0,
     speed: 0,
-    image: 'weather.png',
+    image: 'Sunnynew.png',
     current: ''
   });
 
@@ -72,24 +72,24 @@ function App() {
     let imagePath = '';
     switch (res.data.weather[0].main) {
       case 'Clouds':
-        imagePath = 'weather.png';
+        imagePath = 'Cloudsnew.png';
         currentWeather = 'Облачно';
         break;
       case 'Clear':
-        imagePath = '';
+        imagePath = 'Clearsnew.png';
         currentWeather = 'Солнечно';
         break;
       case 'Rain':
       case 'Drizzle':
-        imagePath = '';
+        imagePath = 'Rainnew.png';
         currentWeather = 'Дождливо';
         break;
       case 'Mist':
-        imagePath = '';
+        imagePath = 'Mistnew.png';
         currentWeather = 'Туманно';
         break;
       default:
-        imagePath = '';
+        imagePath = 'Sunnynew.png';
         currentWeather = 'Ясно';
     }
     setData({
@@ -172,7 +172,7 @@ function App() {
         <div className='weather-footer'>
           <div className='weather-footer__main'>
             <h2>{data.name}</h2>
-            <img src='weather.png' alt='weather'></img>
+            <img src={data.image} alt='weather'></img>
             <h2>{Math.round(data.celcius)}℃</h2>
           </div>
           <div className='weather-footer-container'>
