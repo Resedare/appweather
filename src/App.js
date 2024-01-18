@@ -76,7 +76,7 @@ function App() {
         currentWeather = 'Облачно';
         break;
       case 'Clear':
-        imagePath = 'Clearsnew.png';
+        imagePath = 'Clearnew.png';
         currentWeather = 'Солнечно';
         break;
       case 'Rain':
@@ -171,7 +171,7 @@ function App() {
         </div>
         <div className='weather-footer'>
           <div className='weather-footer__main'>
-            <h2>{data.name}</h2>
+            <h3>{data.name}</h3>
             <img src={data.image} alt='weather'></img>
             <h2>{Math.round(data.celcius)}℃</h2>
           </div>
